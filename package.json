@@ -1,0 +1,11 @@
+{
+  "name": "jQuery-template",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "This is a multipage seed for web application built by jQuery,bootstrap and webpack.",
+  "scripts": {
+  },
+  "devDependencies": {
+    "cloud-cli": "^1.1.1"
+  }
+}
