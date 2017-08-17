@@ -1,4 +1,4 @@
-const buildFileConfig = require('@/config/build-file.config');
+const buildFileConfig = require('./build-file.config');
 const moduleExports = {
   DIRS: {
     BUILD_FILE: buildFileConfig,

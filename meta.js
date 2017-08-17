@@ -24,8 +24,10 @@ module.exports = {
       "message": "Author"
     }
   },
+
   "filters": {
 
   },
+    "skipInterpolation": "src/**/*",
     "completeMessage": "To get started:\n\n  cd {{destDirName}}\n  npm install\n  npm run dll（公共静态资源）\n  npm run dev（开发专用）\n  npm run build（线上专用）"
 };
