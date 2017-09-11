@@ -1,6 +1,20 @@
 # jQuery-template Change Log
 --
 
+## 1.0.2
+ 
+`2017-09-11`
+ 
+- webpack 自动构建工具
+ 
+   - `Changed` 引入`cloud-utils`工具类函数集合，替换工程里的`utils`
+   
+   - `New` 引入`eslint`javascript代码检测工具，新增命令`npm run lint`，详见`template/package.json`、`template/.eslintrc.js`
+ 
+- src
+ 
+   - `New` 引入`store.js`，详见`template/src/assets/js/store.js`
+   
 ## 1.0.1
 
 `2017-08-16`

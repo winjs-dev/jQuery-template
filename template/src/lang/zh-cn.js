@@ -28,14 +28,14 @@ var lang = {
     err_wx_auth: '微信授权失败，请重新进入',
     err_phone: '手机号码为空或有误，请重新输入',
     err_empty_nickname: '请输入昵称',
-    err_tolong_nickname: '昵称最多输入20个字符',
+    err_tolong_nickname: '昵称最多输入20个字符'
   },
   code: {
     get_code: '获取验证码',
     err_empty_code: '请输入正确的验证码',
     err_get_code: '您还没有获取验证码，请先获取验证码',
     again: '重新',
-    left_time: '秒后重新获取',
+    left_time: '秒后重新获取'
   },
   camera: {
     image_uploading: '正在上传图片...',
@@ -52,7 +52,7 @@ var lang = {
     timeout: '您的手机网络不太顺畅喔~',
     unknown_error: '未知错误',
     server_error: '服务器请求错误',
-    no_network: '无网络连接',
+    no_network: '无网络连接'
   },
   fans: {
     txt_cancel_gag_success: '取消禁言成功',

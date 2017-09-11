@@ -1,16 +1,16 @@
-module.exports = function (left, operator, right, options) {
+module.exports = function compare (left, operator, right, options) {
   if (arguments.length < 3) {
     throw new Error('Handlerbars Helper "compare" needs 2 parameters');
   }
   var operators = {
     '==': function (l, r) {
-      return l == r;
+      return l === r;
     },
     '===': function (l, r) {
       return l === r;
     },
     '!=': function (l, r) {
-      return l != r;
+      return l !== r;
     },
     '!==': function (l, r) {
       return l !== r;
@@ -28,7 +28,7 @@ module.exports = function (left, operator, right, options) {
       return l >= r;
     },
     'typeof': function (l, r) {
-      return typeof l == r;
+      return typeof l === r;
     }
   };
 

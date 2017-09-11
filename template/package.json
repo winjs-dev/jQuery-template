@@ -1,6 +1,6 @@
 {
   "name": "{{ name }}",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "{{ description }}",
   "author": "{{ author }}",
   "private": true,
@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "bootstrap": "^3.3",
+    "cloud-utils": "latest",
     "jquery": "^2.2.3",
     "magicless": "latest"
   },

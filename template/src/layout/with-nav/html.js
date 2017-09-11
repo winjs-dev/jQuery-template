@@ -1,43 +1,40 @@
-const config = require('configModule');
-const noJquery = require('withoutJqueryModule');
-const layout = require('./html.hbs'); // 整个页面布局的模板文件，主要是用来统筹各个公共组件的结构
-const header = require('@components/header/html.hbs'); // 页头的模板
-const footer = require('@components/footer/html.hbs'); // 页脚的模板
-const topNav = require('@components/topNav/html.hbs'); // 顶部栏的模板
-const sidebar = require('@components/sidebar/html.hbs'); // 侧边栏的模板
-const crumbs = require('@components/crumbs/html.hbs'); // 面包屑的模板
-const contabs = require('@components/contabs/html.hbs'); // iframe切换的tab的模板
-const dirsConfig = config.DIRS;
+// 整个页面布局的模板文件，主要是用来统筹各个公共组件的结构
+const layout = require('./html.hbs');
+const header = require('@components/header/html.hbs');
+const footer = require('@components/footer/html.hbs');
+const topNav = require('@components/topNav/html.hbs');
+const sidebar = require('@components/sidebar/html.hbs');
+const crumbs = require('@components/crumbs/html.hbs');
+const contabs = require('@components/contabs/html.hbs');
 
-/* 整理渲染公共部分所用到的模板变量 */
+// 整理渲染公共部分所用到的模板变量
 const pf = {
-    pageTitle: '',
-    bodyStyle: 'skin-blue sidebar-mini',
-    constructInsideUrl: noJquery.constructInsideUrl,
+  pageTitle: '',
+  bodyStyle: 'skin-blue sidebar-mini'
 };
 
 const moduleExports = {
-    /* 处理各个页面传入而又需要在公共区域用到的参数 */
-    init(params) {
-        pf.pageTitle = params.pageTitle; // 比如说页面名称，会在<title>或面包屑里用到
-        return this;
-    },
+  // 处理各个页面传入而又需要在公共区域用到的参数
+  init(params) {
+    // 比如说页面名称，会在<title>或面包屑里用到
+    pf.pageTitle = params.pageTitle;
+    return this;
+  },
 
-    /* 整合各公共组件和页面实际内容，最后生成完整的HTML文档 */
-    run(content) {
-        const headerRenderData = Object.assign(dirsConfig, pf); // 页头组件需要加载css/js等，因此需要比较多的变量
-        const renderData = {
-            Header: header(headerRenderData),
-            Footer: footer(),
-            TopNav: topNav(),
-            Sidebar: sidebar(),
-            Crumbs: crumbs(),
-            Contabs: contabs(),
-            Content: content()
-        };
+  // 整合各公共组件和页面实际内容，最后生成完整的HTML文档
+  run(content) {
+    const renderData = {
+      Header: header(pf),
+      Footer: footer(),
+      TopNav: topNav(),
+      Sidebar: sidebar(),
+      Crumbs: crumbs(),
+      Contabs: contabs(),
+      Content: content()
+    };
 
-        return layout(renderData);
-    },
+    return layout(renderData);
+  }
 };
 
 module.exports = moduleExports;

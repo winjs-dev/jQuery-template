@@ -8,7 +8,6 @@
  */
 
 (function($) {
-
   // Cached vars
   var _iCheck = 'iCheck',
     _iCheckHelper = _iCheck + '-helper',
@@ -32,7 +31,6 @@
 
   // Plugin init
   $.fn[_iCheck] = function(options, fire) {
-
     // Walker
     var handle = 'input[type="' + _checkbox + '"], input[type="' + _radio + '"]',
       stack = $(),
@@ -50,7 +48,6 @@
 
     // Check if we should operate with some method
     if (/^(check|uncheck|toggle|indeterminate|determinate|disable|enable|update|destroy)$/i.test(options)) {
-
       // Normalize method's name
       options = options.toLowerCase();
 
@@ -72,8 +69,7 @@
       });
 
     // Customization
-    } else if (typeof options == 'object' || !options) {
-
+    } else if (typeof options === 'object' || !options) {
       // Check if any options were passed
       var settings = $.extend({
           checkedClass: _checked,
@@ -191,7 +187,6 @@
 
             // Do nothing if input is disabled
             if (!node[_disabled]) {
-
               // Click
               if (type == _click) {
                 if ($(event.target).is('a')) {
@@ -201,7 +196,6 @@
 
               // Hover state
               } else if (labelHover) {
-
                 // mouseout|touchend
                 if (/ut|nd/.test(type)) {
                   parent[_remove](hoverClass);
@@ -211,7 +205,7 @@
                   item[_add](labelHoverClass);
                 }
               }
-                if (_mobile) {
+              if (_mobile) {
                 event.stopPropagation();
               } else {
                 return false;
@@ -237,7 +231,7 @@
                 on(self, _checked);
               }
             }
-              return false;
+            return false;
 
           // Keyup
           } else if (type == 'keyup' && node[_type] == _radio) {
@@ -258,17 +252,14 @@
 
           // Do nothing if input is disabled
           if (!node[_disabled]) {
-
             // Click
             if (type == _click) {
               operate(self, false, true);
 
             // Active and hover states
             } else {
-
               // State is on
               if (/wn|er|in/.test(type)) {
-
                 // mousedown|mouseover|touchbegin
                 parent[_add](toggle);
 
@@ -278,12 +269,11 @@
               }
                 // Label hover
               if (label.length && labelHover && toggle == hoverClass) {
-
                 // mouseout|touchend
                 label[/ut|nd/.test(type) ? _remove : _add](labelHoverClass);
               }
             }
-              if (_mobile) {
+            if (_mobile) {
               event.stopPropagation();
             } else {
               return false;
@@ -316,7 +306,6 @@
 
     // Update
     } else if (method == _update) {
-
       // Handle states
       for (var state in active) {
         if (active[state]) {
@@ -326,7 +315,6 @@
         }
       }
     } else if (!direct || method == 'toggle') {
-
       // Helper or label was clicked
       if (!direct) {
         input[_callback]('ifClicked');
@@ -354,7 +342,6 @@
 
     // Prevent unnecessary actions
     if (node[state] !== true) {
-
       // Toggle assigned radio buttons
       if (!keep && state == _checked && node[_type] == _radio && node.name) {
         var form = input.closest('form'),
@@ -370,7 +357,6 @@
       }
         // Indeterminate state
       if (indeterminate) {
-
         // Add indeterminate state
         node[state] = true;
 
@@ -380,7 +366,6 @@
         }
           // Checked or disabled state
       } else {
-
         // Add checked or disabled state
         if (!keep) {
           node[state] = true;
@@ -419,7 +404,6 @@
 
     // Prevent unnecessary actions
     if (node[state] !== false) {
-
       // Toggle state
       if (indeterminate || !keep || keep == 'force') {
         node[state] = false;
@@ -443,7 +427,6 @@
     // Remove all traces
   function tidy(input, callback) {
     if (input.data(_iCheck)) {
-
       // Remove everything except input
       input.parent().html(input.attr('style', input.data(_iCheck).s || ''));
 
@@ -472,7 +455,7 @@
       if (checked) {
         input[_callback]('ifToggled');
       }
-        input[_callback]('ifChanged')[_callback]('if' + capitalize(callback));
+      input[_callback]('ifChanged')[_callback]('if' + capitalize(callback));
     }
   }
 })(window.jQuery || window.Zepto);

@@ -30,8 +30,6 @@ var base = {
       'bootstrap': path.resolve(config.directory.nodeModules, './bootstrap/dist/js/bootstrap.min'),
       'bootstrap_css': path.resolve(config.directory.nodeModules, './bootstrap/dist/css/bootstrap.min.css'),
 
-      /* libs */
-      'withoutJqueryModule': path.resolve(config.directory.libs, './without-jquery.module'),
       /* components */
 
       /* layout */
@@ -39,12 +37,11 @@ var base = {
       'layout-without-nav': path.resolve(config.directory.layout, './without-nav/html'),
 
       'cp': path.resolve(config.directory.common, 'page'),
-      'configModule': path.resolve(config.directory.config, './common.config'),
 
       // 项目公用
-      'utils': path.resolve(config.directory.src, 'utils'),
+      'utils': path.resolve(config.directory.nodeModules, './cloud-utils/dist/cloud-utils.min'),
       'lang': path.resolve(config.directory.src, './lang/zh-cn'),
-      'xhr': path.resolve(config.directory.src, './utils/xhr'),
+      'services': path.resolve(config.directory.src, './services'),
 
       'variable': path.resolve(config.directory.assets, './less/variable.less'),
       'mixins': path.resolve(config.directory.nodeModules, './magicless/magicless.less')
@@ -52,6 +49,15 @@ var base = {
   },
   module: {
     rules: [
+      {
+        test: /\.js$/,
+        loader: 'eslint-loader',
+        enforce: 'pre',
+        include: [utils.resolve('src/common'), utils.resolve('src/helplers'), utils.resolve('src/layout'), utils.resolve('src/pages')],
+        options: {
+          formatter: require('eslint-friendly-formatter')
+        }
+      },
       {
         test: require.resolve('jquery'),
         loader: 'expose-loader?$!expose-loader?jQuery'
@@ -104,7 +110,7 @@ var base = {
     ]
   },
   plugins: [
-    /* 全局shimming */
+    // 全局shimming
     new webpack.ProvidePlugin({
       $: 'jquery',
       jQuery: 'jquery',
