@@ -1,6 +1,16 @@
 # jQuery-template Change Log
 --
 
+## 1.0.4
+ 
+`2017-09-21`
+ 
+- webpack 自动构建工具
+ 
+   - `Changed` 默认设置图片压缩`imagemin`不开启
+   
+   - `Improved` 路径别名优化
+   
 ## 1.0.3
  
 `2017-09-18`

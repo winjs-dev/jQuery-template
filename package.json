@@ -1,6 +1,6 @@
 {
   "name": "jQuery-template",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "license": "MIT",
   "description": "This is a multipage seed for web application built by jQuery,bootstrap and webpack.",
   "scripts": {

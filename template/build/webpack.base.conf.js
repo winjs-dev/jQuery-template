@@ -18,35 +18,34 @@ var base = {
     alias: {
       '@': utils.resolve('src'),
       /* assets */
-      '@assets': path.resolve(config.directory.src, './assets'),
+      '@assets': utils.resolve('src/assets'),
       /* less */
-      '@less': path.resolve(config.directory.assets, './less'),
+      '@less': utils.resolve('src/assets/less'),
       /* js */
-      '@js': path.resolve(config.directory.assets, './js'),
+      '@js': utils.resolve('src/assets/js'),
       /* plugins */
-      '@plugins': path.resolve(config.directory.assets, './plugins'),
+      '@plugins': utils.resolve('src/assets/plugins'),
       /* components */
-      '@components': path.resolve(config.directory.src, './components'),
+      '@components': utils.resolve('src/components'),
 
       /* bootstrap 相关 */
-      'bootstrap': path.resolve(config.directory.nodeModules, './bootstrap/dist/js/bootstrap.min'),
-      'bootstrap_css': path.resolve(config.directory.nodeModules, './bootstrap/dist/css/bootstrap.min.css'),
+      'bootstrap': utils.resolve('node_modules/bootstrap/dist/js/bootstrap.min'),
+      'bootstrap_css': utils.resolve('node_modules/bootstrap/dist/css/bootstrap.min.css'),
 
       /* components */
 
       /* layout */
-      'layout': path.resolve(config.directory.layout, './with-nav/html'),
-      'layout-without-nav': path.resolve(config.directory.layout, './without-nav/html'),
+      'layout': utils.resolve('src/layout/with-nav/html'),
+      'layout-without-nav': utils.resolve('src/layout/without-nav/html'),
 
-      'cp': path.resolve(config.directory.common, 'page'),
+      'cp': utils.resolve('src/common/page'),
 
       // 项目公用
-      'utils': path.resolve(config.directory.nodeModules, './cloud-utils/dist/cloud-utils.min'),
-      'lang': path.resolve(config.directory.src, './lang/zh-cn'),
-      'services': path.resolve(config.directory.src, './services'),
-
-      'variable': path.resolve(config.directory.assets, './less/variable.less'),
-      'mixins': path.resolve(config.directory.nodeModules, './magicless/magicless.less')
+      'services': utils.resolve('src/services'),
+      'lang': utils.resolve('src/lang/zh-cn'),
+      'variable': utils.resolve('src/assets/less/variable.less'),
+      'utils': utils.resolve('node_modules/cloud-utils/dist/cloud-utils.min'),
+      'mixins': utils.resolve('node_modules/magicless/magicless.less'),
     }
   },
   module: {
