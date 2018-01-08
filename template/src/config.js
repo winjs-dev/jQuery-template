@@ -8,6 +8,6 @@
 /* name module */
 
 window.LOCAL_CONFIG = {
-    // 工作室服务及接口
+  // 工作室服务及接口
   API_HOME: 'https://fulldev.yjifs.com/'
 };

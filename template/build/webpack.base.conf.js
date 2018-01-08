@@ -1,10 +1,21 @@
-var path = require('path')
-var utils = require('./utils')
-var config = require('./config')
-var webpack = require('webpack')
-var os = require('os')
-var HappyPack = require('happypack')
-var happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length})
+'use strict'
+const path = require('path')
+const utils = require('./utils')
+const config = require('./config')
+const os = require('os')
+const HappyPack = require('happypack')
+const happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length})
+
+const createLintingRule = () => ({
+  test: /\.(js|vue)$/,
+  loader: 'eslint-loader',
+  enforce: 'pre',
+  include: [utils.resolve('src/modules')],
+  options: {
+    formatter: require('eslint-friendly-formatter'),
+    emitWarning: !config.dev.showEslintErrorsInOverlay
+  }
+})
 
 var base = {
   output: {
@@ -50,15 +61,7 @@ var base = {
   },
   module: {
     rules: [
-      {
-        test: /\.js$/,
-        loader: 'eslint-loader',
-        enforce: 'pre',
-        include: [utils.resolve('src/common'), utils.resolve('src/helplers'), utils.resolve('src/layout'), utils.resolve('src/pages')],
-        options: {
-          formatter: require('eslint-friendly-formatter')
-        }
-      },
+      ...(config.dev.useEslint? [createLintingRule()] : []),
       {
         test: require.resolve('jquery'),
         loader: 'expose-loader?$!expose-loader?jQuery'

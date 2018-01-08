@@ -20,7 +20,7 @@ const moduleExports = {
     pf.pageTitle = params.pageTitle;
     return this;
   },
-
+  
   // 整合各公共组件和页面实际内容，最后生成完整的HTML文档
   run(content) {
     const renderData = {
@@ -32,7 +32,7 @@ const moduleExports = {
       Contabs: contabs(),
       Content: content()
     };
-
+    
     return layout(renderData);
   }
 };

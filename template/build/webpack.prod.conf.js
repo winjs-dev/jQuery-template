@@ -1,23 +1,24 @@
-var path = require('path')
-var utils = require('./utils')
-var webpack = require('webpack')
-var config = require('./config')
-var merge = require('webpack-merge')
-var baseWebpackConfig = require('./webpack.base.conf')
-var CopyWebpackPlugin = require('copy-webpack-plugin')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
-var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+'use strict'
+const path = require('path')
+const utils = require('./utils')
+const webpack = require('webpack')
+const config = require('./config')
+const merge = require('webpack-merge')
+const baseWebpackConfig = require('./webpack.base.conf')
+const CopyWebpackPlugin = require('copy-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
-var env = config.build.env
-
-var webpackConfig = merge(baseWebpackConfig, {
+const webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,
-      extract: true
+      extract: true,
+      usePostCSS: true
     })
   },
-  devtool: config.build.productionSourceMap ? '#source-map' : false,
+  devtool: config.build.productionSourceMap ? config.build.devtool : false,
   output: {
     path: config.build.assetsRoot,
     filename: '[name].[chunkhash].js',
@@ -26,33 +27,46 @@ var webpackConfig = merge(baseWebpackConfig, {
   plugins: [
     // http://vuejs.github.io/vue-loader/en/workflow/production.html
     new webpack.DefinePlugin({
-      'process.env': env
+      'process.env': require('./config/prod.env')
     }),
-    new webpack.optimize.UglifyJsPlugin({
-      exclude: /node_module\/\.min\.js$/,
-      // http://pinkyjie.com/2016/03/05/webpack-tips/
-      // 使用module的.name属性来决定一个service的名字，然后在别的地方使用依赖注入来引入这个service的话，这个时候一旦你使用-p参数，程序就会报错：找不到provider，MockDataProvider <- MockData。因为在e2e.data.js文件中你export的class虽然叫MockData，但这个名字会被UglifyJsPlugin改掉。这是因为这个插件有一个mangle选项，会对所有函数名变量名进行混淆，在压缩的同时保证安全。
-      // {except: ['$', 'exports', 'require']},
-      mangle: false,
-      compress: {
-        warnings: false,
-        drop_console: true,
-        drop_debugger: true
+    new UglifyJsPlugin({
+      uglifyOptions: {
+        exclude: /node_module\/\.min\.js$/,
+        // http://pinkyjie.com/2016/03/05/webpack-tips/
+        // 使用module的.name属性来决定一个service的名字，然后在别的地方使用依赖注入来引入这个service的话，这个时候一旦你使用-p参数，程序就会报错：找不到provider，MockDataProvider <- MockData。因为在e2e.data.js文件中你export的class虽然叫MockData，但这个名字会被UglifyJsPlugin改掉。这是因为这个插件有一个mangle选项，会对所有函数名变量名进行混淆，在压缩的同时保证安全。
+        // {except: ['$', 'exports', 'require']},
+        mangle: false,
+        compress: {
+          warnings: false,
+          drop_console: true
+        }
       },
-      sourceMap: true
+      sourceMap: config.build.productionSourceMap,
+      parallel: true
     }),
     // extract css into its own file
     new ExtractTextPlugin({
       filename: '[name].[contenthash].css',
-      allChunks: true
+      // set the following option to `true` if you want to extract CSS from
+      // codesplit chunks into this main css file as well.
+      // This will result in *all* of your app's CSS being loaded upfront.
+      allChunks: false
     }),
     // Compress extracted CSS. We are using this plugin so that possible
     // duplicated CSS from different components can be deduped.
     new OptimizeCSSPlugin({
-      cssProcessorOptions: {
-        safe: true
-      }
+      cssProcessorOptions: config.build.productionSourceMap
+        ? { safe: true, map: { inline: false } }
+        : { safe: true }
     }),
+    // generate dist index.html with correct asset hash for caching.
+    // you can customize output by editing /index.html
+    // see https://github.com/ampedandwired/html-webpack-plugin
+    ...utils.genMultiHtmlPlugins(),
+    // cache Module Identifiers, keep module.id stable when vendor modules does not change
+    new webpack.HashedModuleIdsPlugin(),
+    // enable scope hoisting
+    new webpack.optimize.ModuleConcatenationPlugin(),
     // split vendor js into its own file
     new webpack.optimize.CommonsChunkPlugin({
       name: 'vendor',
@@ -71,16 +85,24 @@ var webpackConfig = merge(baseWebpackConfig, {
     // prevent vendor hash from being updated whenever app bundle is updated
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
-      chunks: ['vendor']
+      minChunks: Infinity
+    }),
+    // This instance extracts shared chunks from code splitted chunks and bundles them
+    // in a separate chunk, similar to the vendor chunk
+    // see: https://webpack.js.org/plugins/commons-chunk-plugin/#extra-async-commons-chunk
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'app',
+      async: 'vendor-async',
+      children: true,
+      minChunks: 3
     }),
     // 配置好Dll
     new webpack.DllReferencePlugin({
-      context: config.directory.root, // 指定一个路径作为上下文环境，需要与DllPlugin的context参数保持一致，建议统一设置为项目根目录
-      manifest: require(config.directory.root + '/vendor-manifest.json'), // 指定manifest.json
+      // 指定一个路径作为上下文环境，需要与DllPlugin的context参数保持一致，建议统一设置为项目根目录
+      context: config.directory.root,
+      // 指定manifest.json
+      manifest: require(config.directory.root + '/vendor-manifest.json'),
     }),
-    ...utils.genMultiHtmlPlugins(),
-    // 进度条
-    new webpack.ProgressPlugin(),
     // 添加版本号
     new webpack.BannerPlugin('current version: ' + new Date()),
     // copy custom static assets
@@ -109,8 +131,8 @@ var webpackConfig = merge(baseWebpackConfig, {
 })
 
 if (config.build.productionImagemin) {
-  var ImageminPlugin = require('imagemin-webpack-plugin').default
-
+  const ImageminPlugin = require('imagemin-webpack-plugin').default
+  
   webpackConfig.plugins.push(
     // Make sure that the plugin is after any plugins that add images
     new ImageminPlugin({
@@ -124,8 +146,8 @@ if (config.build.productionImagemin) {
 }
 
 if (config.build.productionGzip) {
-  var CompressionWebpackPlugin = require('compression-webpack-plugin')
-
+  const CompressionWebpackPlugin = require('compression-webpack-plugin')
+  
   webpackConfig.plugins.push(
     new CompressionWebpackPlugin({
       asset: '[path].gz[query]',
@@ -142,7 +164,7 @@ if (config.build.productionGzip) {
 }
 
 if (config.build.bundleAnalyzerReport) {
-  var BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
+  const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin
   webpackConfig.plugins.push(new BundleAnalyzerPlugin())
 }
 

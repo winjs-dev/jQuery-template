@@ -6,7 +6,16 @@
  */
 
 import xhr from './xhr';
+import urls from './RESTFULLURL';
 
-export function login(data) {
-  return xhr('/usercenter/user/mobile_login', {data});
-}
+let FUNS = {};
+
+Object.keys(urls).forEach((key) => {
+  FUNS[key] = (options = {}) => {
+    return new Promise((resolve, reject) => {
+      resolve(xhr(urls[key], options));
+    });
+  }
+});
+
+export default FUNS;

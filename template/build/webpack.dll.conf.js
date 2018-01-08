@@ -1,15 +1,17 @@
-var path = require('path')
-var utils = require('./utils')
-var webpack = require('webpack')
-var config = require('./config')
-var merge = require('webpack-merge')
-var baseWebpackConfig = require('./webpack.base.conf')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
-var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
-var SpritesmithPlugin = require('webpack-spritesmith')
+'use strict'
+const path = require('path')
+const utils = require('./utils')
+const webpack = require('webpack')
+const config = require('./config')
+const merge = require('webpack-merge')
+const baseWebpackConfig = require('./webpack.base.conf')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
+const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
 
 // 需要dll打包进来的文件
 var vendors = [
+  require.resolve('./polyfills'),
   'jquery',
   'bootstrap',
   'bootstrap_css',
@@ -17,15 +19,16 @@ var vendors = [
 
 var webpackConfig = merge(baseWebpackConfig, {
   entry: {
-    vendor: vendors
+    vendors
   },
   module: {
     rules: utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,
-      extract: true
+      extract: true,
+      usePostCSS: true
     })
   },
-  devtool: '#source-map',
+  devtool: config.build.devtool,
   output: {
     path: config.directory.dll,
     filename: '[name].dll.js',
@@ -44,14 +47,18 @@ var webpackConfig = merge(baseWebpackConfig, {
       // 指定一个路径作为上下文环境，需要与DllReferencePlugin的context参数保持一致，建议统一设置为项目根目录
       context: config.directory.root
     }),
-
-    new webpack.optimize.UglifyJsPlugin({
-      compress: {
-        warnings: false
+    new UglifyJsPlugin({
+      uglifyOptions: {
+        compress: {
+          warnings: false,
+          drop_console: true
+        }
       },
-      sourceMap: true
+      sourceMap: config.build.productionSourceMap,
+      parallel: true
     }),
-
+    // enable scope hoisting
+    new webpack.optimize.ModuleConcatenationPlugin(),
     // extract css into its own file
     new ExtractTextPlugin({
       filename: '[name].dll.css'
@@ -63,25 +70,10 @@ var webpackConfig = merge(baseWebpackConfig, {
         safe: true
       }
     }),
+    // 添加版本号
+    new webpack.BannerPlugin('current version: ' + new Date()),
     // 进度条
-    new webpack.ProgressPlugin(),
-    // sprites图片精灵
-    new SpritesmithPlugin({
-      src: {
-        cwd: path.resolve(config.directory.assets, './images/sprites/'),
-        glob: '*.png'
-      },
-      target: {
-        image: path.resolve(config.directory.assets, './images/_sprites.png'),
-        css: path.resolve(config.directory.assets, './less/_sprite.css'),
-      },
-      apiOptions: {
-        cssImageRef: '../images/_sprites.png',
-      },
-      spritesmithOptions: {
-        algorithm: 'top-down'
-      }
-    })
+    new webpack.ProgressPlugin()
   ]
 })
 
