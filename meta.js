@@ -68,7 +68,7 @@ module.exports = {
     'src/assets/less/_sprite.css': 'cssSprite',
     'src/assets/images/sprites/*': 'cssSprite'
   },
-  skipInterpolation: ['src/components/**/*', 'src/pages/**/*'],
+  skipInterpolation: ['src/components/**/*', 'src/pages/**/*', 'src/layout/**/*'],
   complete: function (data, {chalk}) {
     const green = chalk.green
     
