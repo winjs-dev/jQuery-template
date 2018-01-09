@@ -13,7 +13,7 @@ const SpritesmithPlugin = require('webpack-spritesmith')
 {{/cssSprite}}
 
 // 需要dll打包进来的文件
-var vendors = [
+var vendor = [
   require.resolve('./polyfills'),
   'jquery',
   'bootstrap',
@@ -22,7 +22,7 @@ var vendors = [
 
 var webpackConfig = merge(baseWebpackConfig, {
   entry: {
-    vendors
+    vendor
   },
   module: {
     rules: utils.styleLoaders({

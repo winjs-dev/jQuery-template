@@ -32,7 +32,7 @@ exports.cssLoaders = function (options) {
   }
   
   // generate loader string to be used with extract text plugin
-  function generateLoaders (loader, loaderOptions) {
+  function generateLoaders(loader, loaderOptions) {
     const loaders = options.usePostCSS ? [cssLoader, postcssLoader] : [cssLoader]
     if (loader) {
       loaders.push({
@@ -60,7 +60,7 @@ exports.cssLoaders = function (options) {
     css: generateLoaders(),
     postcss: generateLoaders(),
     less: generateLoaders('less'),
-    sass: generateLoaders('sass', { indentedSyntax: true }),
+    sass: generateLoaders('sass', {indentedSyntax: true}),
     scss: generateLoaders('sass'),
     stylus: generateLoaders('stylus'),
     styl: generateLoaders('stylus')
@@ -81,12 +81,12 @@ exports.styleLoaders = function (options) {
   return output
 }
 
-exports.resolve = function(dir) {
+exports.resolve = function (dir) {
   return path.join(__dirname, '..', dir)
 }
 
 // is prodution
-exports.isProduction = function() {
+exports.isProduction = function () {
   return isProd
 }
 
@@ -100,28 +100,34 @@ exports.isProduction = function() {
 exports.genMultiHtmlPlugins = function () {
   var pagesArr = require('./page.entries');
   var plugins = [];
-
+  
   pagesArr.forEach(function (page) {
     plugins.push(
-      new HtmlWebpackPlugin({
-        filename: `${page}.html`,
-        template: path.join(config.directory.pages, `./${page}/html.js`),
-        chunks: isProd ? ['vendor', 'manifest', page] : [page],
-        inject: true,
-        hash: isProd ? true : false, // 为静态资源生成hash值
-        xhtml: isProd ? true : false,
-        minify: {
-          removeComments: isProd ? true : false, //移除HTML中的注释
-          collapseWhitespace: isProd ? true : false, //删除空白符与换行符
-          removeAttributeQuotes: isProd ? true : false
-          // more options:
-          // https://github.com/kangax/html-minifier#options-quick-reference
-        },
-        // necessary to consistently work with multiple chunks via CommonsChunkPlugin
-        chunksSortMode: 'dependency'
-      }))
+      isProd ? new HtmlWebpackPlugin({
+          filename: `${page}.html`,
+          template: path.join(config.directory.pages, `./${page}/html.js`),
+          chunks: isProd ? ['vendor', 'manifest', page] : [page],
+          inject: true,
+          hash: isProd ? true : false, // 为静态资源生成hash值
+          xhtml: isProd ? true : false,
+          minify: {
+            removeComments: isProd ? true : false, //移除HTML中的注释
+            collapseWhitespace: isProd ? true : false, //删除空白符与换行符
+            removeAttributeQuotes: isProd ? true : false
+            // more options:
+            // https://github.com/kangax/html-minifier#options-quick-reference
+          },
+          // necessary to consistently work with multiple chunks via CommonsChunkPlugin
+          chunksSortMode: 'dependency'
+        })
+        : new HtmlWebpackPlugin({
+          filename: `${page}.html`,
+          template: path.join(config.directory.pages, `./${page}/html.js`),
+          inject: true
+        })
+    )
   })
-
+  
   return plugins
 }
 
