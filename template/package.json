@@ -68,7 +68,7 @@
     "url-loader": "^0.5.9",
     "webpack": "^3.10.0",
     "webpack-bundle-analyzer": "^2.9.0",
-    "webpack-dev-server": "^2.9.1",
+    "webpack-dev-server": "2.9.7",
     "webpack-merge": "^4.1.0"{{#cssSprite}},
     "webpack-spritesmith": "^0.3.3"{{/cssSprite}}
   },
