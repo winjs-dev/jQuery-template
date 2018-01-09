@@ -1,4 +1,4 @@
-var lang = {
+const lang = {
   global: {
     cancel: '取消',
     send: '发送',
@@ -60,4 +60,4 @@ var lang = {
   }
 };
 
-module.exports = lang;
+export default lang;

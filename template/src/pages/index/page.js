@@ -1,5 +1,5 @@
-require('cp');
-require('./page.less');
+import 'cp';
+import './page.less';
 
 $(function () {
   console.log('index');

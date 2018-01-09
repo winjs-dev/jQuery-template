@@ -1,7 +1,7 @@
-require('@less/app.less');
+import '@less/app.less';
 
-var main = {
-  initialize: function () {
+const main = {
+  initialize: () => {
     window.i18n = require('../lang/zh-cn');
   }
 };

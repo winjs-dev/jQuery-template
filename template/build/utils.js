@@ -1,11 +1,13 @@
-var path = require('path')
-var config = require('./config')
-var HtmlWebpackPlugin = require('html-webpack-plugin')
-var ExtractTextPlugin = require('extract-text-webpack-plugin')
-var isProd = process.env.NODE_ENV === "production"
+'use strict'
+const path = require('path')
+const config = require('./config')
+const HtmlWebpackPlugin = require('html-webpack-plugin')
+const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const isProd = process.env.NODE_ENV === "production"
+const pkg = require('../package.json')
 
 exports.assetsPath = function (_path) {
-  var assetsSubDirectory = process.env.NODE_ENV === 'production'
+  const assetsSubDirectory = isProd
     ? config.build.assetsSubDirectory
     : config.dev.assetsSubDirectory
   return path.posix.join(assetsSubDirectory, _path)
@@ -13,18 +15,25 @@ exports.assetsPath = function (_path) {
 
 exports.cssLoaders = function (options) {
   options = options || {}
-
-  var cssLoader = {
+  
+  const cssLoader = {
     loader: 'css-loader',
     options: {
-      minimize: process.env.NODE_ENV === 'production',
+      minimize: isProd,
       sourceMap: options.sourceMap
     }
   }
-
+  
+  var postcssLoader = {
+    loader: 'postcss-loader',
+    options: {
+      sourceMap: options.sourceMap
+    }
+  }
+  
   // generate loader string to be used with extract text plugin
   function generateLoaders (loader, loaderOptions) {
-    var loaders = [cssLoader]
+    const loaders = options.usePostCSS ? [cssLoader, postcssLoader] : [cssLoader]
     if (loader) {
       loaders.push({
         loader: loader + '-loader',
@@ -33,18 +42,19 @@ exports.cssLoaders = function (options) {
         })
       })
     }
-
+    
     // Extract CSS when that option is specified
     // (which is the case during production build)
     if (options.extract) {
       return ExtractTextPlugin.extract({
-        use: loaders
+        use: loaders,
+        fallback: 'style-loader'
       })
     } else {
-      return loaders
+      return ['style-loader'].concat(loaders)
     }
   }
-
+  
   // https://vue-loader.vuejs.org/en/configurations/extract-css.html
   return {
     css: generateLoaders(),
@@ -97,7 +107,7 @@ exports.genMultiHtmlPlugins = function () {
         filename: `${page}.html`,
         template: path.join(config.directory.pages, `./${page}/html.js`),
         chunks: isProd ? ['vendor', 'manifest', page] : [page],
-        inject: isProd ? true : false,
+        inject: true,
         hash: isProd ? true : false, // 为静态资源生成hash值
         xhtml: isProd ? true : false,
         minify: {
@@ -113,4 +123,23 @@ exports.genMultiHtmlPlugins = function () {
   })
 
   return plugins
+}
+
+exports.createNotifierCallback = function () {
+  const notifier = require('node-notifier')
+  
+  return (severity, errors) => {
+    if (severity !== 'error') {
+      return
+    }
+    const error = errors[0]
+    
+    const filename = error.file.split('!').pop()
+    notifier.notify({
+      title: pkg.name,
+      message: severity + ': ' + error.name,
+      subtitle: filename || '',
+      // icon: path.join(__dirname, 'logo.png')
+    })
+  }
 }

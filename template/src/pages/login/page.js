@@ -1,7 +1,7 @@
-require('cp');
-require('@plugins/iCheck/minimal/_all.css');
-require('@plugins/iCheck/icheck.min');
-require('./page.less');
+import 'cp';
+import '@plugins/iCheck/minimal/_all.css';
+import '@plugins/iCheck/icheck.min';
+import './page.less';
 
 $(function () {
   $('input').iCheck({

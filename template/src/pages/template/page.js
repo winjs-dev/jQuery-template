@@ -1,7 +1,7 @@
-require('cp');
-require('./page.less');
+import 'cp';
+import './page.less';
 
-var template = {
+const template = {
   initialize: function () {
   
   }

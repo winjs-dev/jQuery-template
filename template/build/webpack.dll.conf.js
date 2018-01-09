@@ -8,6 +8,9 @@ const baseWebpackConfig = require('./webpack.base.conf')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 const OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
+{{#cssSprite}}
+const SpritesmithPlugin = require('webpack-spritesmith')
+{{/cssSprite}}
 
 // 需要dll打包进来的文件
 var vendors = [
@@ -70,6 +73,25 @@ var webpackConfig = merge(baseWebpackConfig, {
         safe: true
       }
     }),
+    {{#cssSprite}}
+    // sprites图片精灵
+    new SpritesmithPlugin({
+      src: {
+        cwd: path.resolve(config.directory.assets, './images/sprites/'),
+        glob: '*.png'
+      },
+      target: {
+        image: path.resolve(config.directory.assets, './images/_sprites.png'),
+        css: path.resolve(config.directory.assets, './less/_sprite.css'),
+      },
+      apiOptions: {
+        cssImageRef: '../images/_sprites.png',
+      },
+      spritesmithOptions: {
+        algorithm: 'top-down'
+      }
+    }),
+    {{/cssSprite}}
     // 添加版本号
     new webpack.BannerPlugin('current version: ' + new Date()),
     // 进度条

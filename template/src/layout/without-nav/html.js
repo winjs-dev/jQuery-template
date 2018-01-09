@@ -1,6 +1,6 @@
-const layout = require('./html.hbs');
-const header = require('@components/header/html.hbs');
-const footer = require('@components/footer/html.hbs');
+import layout from './html.hbs';
+import header from '@components/header/html.hbs';
+import footer from '@components/footer/html.hbs';
 
 const pf = {
   pageTitle: '',
@@ -22,4 +22,4 @@ const moduleExports = {
   }
 };
 
-module.exports = moduleExports;
+export default moduleExports;

@@ -1,6 +1,6 @@
-const content = require('./content.hbs');
-const layout = require('layout');
+import content from './content.hbs';
+import layout from 'layout';
 
-module.exports = layout.init({
+export default layout.init({
   pageTitle: 'AdminLTE 2 | Blank Page'
 }).run(content);

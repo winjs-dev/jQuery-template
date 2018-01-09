@@ -1,6 +1,6 @@
-const content = require('./content.hbs');
-const layout = require('layout-without-nav');
+import content from './content.hbs';
+import layout from 'layout';
 
-module.exports = layout.init({
-  pageTitle: 'AdminLTE 2 | Log in'
+export default layout.init({
+  pageTitle: 'AdminLTE 2 | login in'
 }).run(content);
