@@ -1,4 +1,4 @@
-export default function compare (left, operator, right, options) {
+module.exports = function compare (left, operator, right, options) {
   if (arguments.length < 3) {
     throw new Error('Handlerbars Helper "compare" needs 2 parameters');
   }

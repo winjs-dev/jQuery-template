@@ -1,11 +1,12 @@
 // 整个页面布局的模板文件，主要是用来统筹各个公共组件的结构
-import layout from './html.hbs';
-import header from '@components/header/html.hbs';
-import footer from '@components/footer/html.hbs';
-import topNav from '@components/topNav/html.hbs';
-import sidebar from '@components/sidebar/html.hbs';
-import crumbs from '@components/crumbs/html.hbs';
-import contabs from '@components/contabs/html.hbs';
+const layout = require('./html.hbs');
+const header = require('@components/header/html.hbs');
+const footer = require('@components/footer/html.hbs');
+const topNav = require('@components/topNav/html.hbs');
+const sidebar = require('@components/sidebar/html.hbs');
+const crumbs = require('@components/crumbs/html.hbs');
+const contabs = require('@components/contabs/html.hbs');
+
 
 // 整理渲染公共部分所用到的模板变量
 const pf = {
@@ -35,4 +36,4 @@ const moduleExports = {
   }
 };
 
-export default moduleExports;
+module.exports = moduleExports;
