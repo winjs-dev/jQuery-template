@@ -70,7 +70,7 @@ var base = {
       {
         test: /\.(js|jsx)$/,
         use: ['happypack/loader?id=happybabel'],
-        include: [utils.resolve('src/pages'), utils.resolve('test')]
+        include: [utils.resolve('src/pages'), utils.resolve('src/services'), utils.resolve('src/layout'), utils.resolve('src/helpers'), utils.resolve('src/config'), utils.resolve('src/common')]
       },
       {
         test: /\.html$/,

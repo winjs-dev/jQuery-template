@@ -11,10 +11,8 @@ import urls from './RESTFULLURL';
 let FUNS = {};
 
 Object.keys(urls).forEach((key) => {
-  FUNS[key] = (options = {}) => {
-    return new Promise((resolve, reject) => {
-      resolve(xhr(urls[key], options));
-    });
+  FUNS[key] = (options = {}, ...args) => {
+    return xhr(urls[key], options, ...args);
   }
 });
 

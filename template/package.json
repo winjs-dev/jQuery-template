@@ -14,7 +14,7 @@
   "dependencies": {
     "bootstrap": "^3.3",
     "cloud-utils": "latest",
-    "jquery": "^2.2.3",
+    "jquery": "^3.2.1",
     "magicless": "latest"
   },
   "devDependencies": {
