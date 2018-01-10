@@ -116,8 +116,8 @@ const webpackConfig = merge(baseWebpackConfig, {
         to: 'assets/images/copyfiles'
       },
       {
-        from: path.resolve(config.directory.src, 'config.js'),
-        to: 'config.js'
+        from: path.resolve(config.directory.src, 'config.default.js'),
+        to: 'config.default.js'
       },
       {
         from: config.directory.vendor + '/html5shiv.min.js',
