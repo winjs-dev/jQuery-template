@@ -1,4 +1,4 @@
-var lang = {
+export default {
   global: {
     cancel: '取消',
     send: '发送',
@@ -59,5 +59,3 @@ var lang = {
     txt_gag_success: '禁言成功'
   }
 };
-
-module.exports = lang;

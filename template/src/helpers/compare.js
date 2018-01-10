@@ -1,4 +1,4 @@
-module.exports = function compare (left, operator, right, options) {
+export default function compare(left, operator, right, options) {
   if (arguments.length < 3) {
     throw new Error('Handlerbars Helper "compare" needs 2 parameters');
   }
@@ -26,18 +26,15 @@ module.exports = function compare (left, operator, right, options) {
     },
     '>=': function (l, r) {
       return l >= r;
-    },
-    'typeof': function (l, r) {
-      return typeof l === r;
     }
   };
-  
+
   if (!operators[operator]) {
     throw new Error('Handlerbars Helper "compare" doesn\'t know the operator ' + operator);
   }
-  
+
   var result = operators[operator](left, right);
-  
+
   if (result) {
     return options.fn(this);
   } else {

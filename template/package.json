@@ -9,7 +9,7 @@
     "start": "npm run dev",
     "dll": "node build/dll-build.js",
     "build": "node build/build.js",
-    "lint": "eslint --fix --ext .js,.vue src/modules"
+    "lint": "eslint --fix --ext .js src/helpers src/pages"
   },
   "dependencies": {
     "bootstrap": "^3.3",

@@ -10,4 +10,3 @@ $(function () {
     increaseArea: '20%' // optional
   });
 })
-

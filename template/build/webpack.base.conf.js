@@ -8,7 +8,7 @@ const HappyPack = require('happypack')
 const happyThreadPool = HappyPack.ThreadPool({size: os.cpus().length})
 
 const createLintingRule = () => ({
-  test: /\.(js|vue)$/,
+  test: /\.js$/,
   loader: 'eslint-loader',
   enforce: 'pre',
   include: [utils.resolve('src/modules')],
@@ -70,7 +70,7 @@ var base = {
       {
         test: /\.(js|jsx)$/,
         use: ['happypack/loader?id=happybabel'],
-        include: [utils.resolve('src/modules'), utils.resolve('test')]
+        include: [utils.resolve('src/pages'), utils.resolve('test')]
       },
       {
         test: /\.html$/,

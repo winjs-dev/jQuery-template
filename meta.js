@@ -68,7 +68,11 @@ module.exports = {
     'src/assets/less/_sprite.css': 'cssSprite',
     'src/assets/images/sprites/*': 'cssSprite'
   },
-  skipInterpolation: ['src/components/**/*', 'src/pages/**/*', 'src/layout/**/*'],
+  skipInterpolation: [ // 过滤掉不用解析的文件，如替换{{}}语法
+    'src/components/**/*',
+    'src/pages/**/*',
+    'src/layout/**/*'
+  ],
   complete: function (data, {chalk}) {
     const green = chalk.green
     

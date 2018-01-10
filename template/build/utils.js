@@ -106,14 +106,14 @@ exports.genMultiHtmlPlugins = function () {
       isProd ? new HtmlWebpackPlugin({
           filename: `${page}.html`,
           template: path.join(config.directory.pages, `./${page}/html.js`),
-          chunks: isProd ? ['vendor', 'manifest', page] : [page],
+          chunks: ['vendor', 'manifest', page],
           inject: true,
-          hash: isProd ? true : false, // 为静态资源生成hash值
-          xhtml: isProd ? true : false,
+          hash: true, // 为静态资源生成hash值
+          xhtml: true,
           minify: {
-            removeComments: isProd ? true : false, //移除HTML中的注释
-            collapseWhitespace: isProd ? true : false, //删除空白符与换行符
-            removeAttributeQuotes: isProd ? true : false
+            removeComments: true, //移除HTML中的注释
+            collapseWhitespace: true, //删除空白符与换行符
+            removeAttributeQuotes: true
             // more options:
             // https://github.com/kangax/html-minifier#options-quick-reference
           },
@@ -123,7 +123,8 @@ exports.genMultiHtmlPlugins = function () {
         : new HtmlWebpackPlugin({
           filename: `${page}.html`,
           template: path.join(config.directory.pages, `./${page}/html.js`),
-          inject: true
+          inject: true,
+          chunks: [page]
         })
     )
   })
