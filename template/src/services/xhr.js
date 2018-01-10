@@ -14,7 +14,7 @@ function checkStatus(response) {
     const status = response.status;
     if (status === 200 || status === 304 || status === 400) {
       // 如果不需要除了data之外的数据，可以直接 return response.data
-      return response;
+      return response.responseJSON || response.responseText;
     } else {
       let errorInfo = '';
       switch (status) {
@@ -70,41 +70,38 @@ function checkStatus(response) {
 export default function xhr(url, {
   async = true,
   prefix = window.CT.OPEN_PREFIX,
-  method = 'post',
+  type = 'post',
   data = {},
   timeout = 10000,
   headers = {},
   dataType = 'json',
-  contentType = 'application/x-www-form-urlencoded',
-  beforeSend = function () {},
-  success = function () {}
+  beforeSend = () => {
+  }
+}, successFn = () => {
+}, errorFn = () => {
 }) {
   const baseURL = autoMatchBaseUrl(prefix);
-  
-  headers = Object.assign(method === 'get' ? {
-    'X-Requested-With': 'XMLHttpRequest',
+
+  headers = Object.assign(type === 'get' ? {
     'Accept': 'application/json',
     'Content-Type': 'application/json; charset=UTF-8'
   } : {
-    'X-Requested-With': 'XMLHttpRequest',
     'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8'
   }, headers);
-  
+
   return $.ajax({
-    url: baseURL + url,
-    method,
+    url: baseURL + url.replace(/^\//, ''),
+    type,
     async,
     data,
     timeout,
     headers,
     dataType,
-    contentType,
     beforeSend
-  }).done((response) => {
-    return checkStatus(response);
+  }).then((data, statusText, jqXHR) => {
+    (typeof successFn === 'function') && successFn(checkStatus(jqXHR));
   }).fail((err) => {
-    console.error(JSON.stringify(err));
-  }).always((status) => {
-    console.log(JSON.stringify(status));
+    // 网络异常等造成的接口不通
+    (typeof errorFn === 'function') && errorFn(checkStatus(err));
   });
 }
