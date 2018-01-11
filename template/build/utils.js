@@ -3,7 +3,7 @@ const path = require('path')
 const config = require('./config')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
-const isProd = process.env.NODE_ENV === "production"
+const isProd = process.env.NODE_ENV === 'production'
 const pkg = require('../package.json')
 
 exports.assetsPath = function (_path) {
