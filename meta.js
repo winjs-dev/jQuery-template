@@ -31,7 +31,7 @@ module.exports = {
       type: 'string',
       required: false,
       message: 'Project description',
-      default: 'A Vue.js project'
+      default: 'A multi-page web application built on jQuery, Bootstrap and Webpack.'
     },
     author: {
       type: 'string',
@@ -72,6 +72,11 @@ module.exports = {
     'src/assets/less/_sprite.css': 'cssSprite',
     'src/assets/images/sprites/*': 'cssSprite'
   },
+  skipInterpolation: [ // 过滤掉不用解析的文件，如替换{{}}语法
+    'src/components/**/*',
+    'src/pages/**/*',
+    'src/layout/**/*'
+  ],
   complete: function (data, {chalk}) {
     const green = chalk.green
 
