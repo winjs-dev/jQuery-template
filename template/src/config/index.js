@@ -6,9 +6,7 @@
  */
 export default {
   // openapi
-  OPEN_API: 'vipstu/v1/',
-  // 灰度升级
-  UPGRADE_API: 'upgrade/',
+  OPEN_PREFIX: 'vipstu/v1/',
   // 流式服务，如上传图片路径
-  UPLOADING_API: 'fileOpenapi/'
+  UPLOADING_PREFIX: 'fileOpenapi/'
 };
