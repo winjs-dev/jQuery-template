@@ -17,6 +17,8 @@ This is a project template for [cloud-cli](https://github.com/cklwblove/cloud-cl
 ``` bash
 $ npm install -g cloud-cli
 $ cloud init jQuery-template my-project
+$ or 
+$ vue init jQuery-template my-project
 $ cd my-project
 $ npm install
 $ npm run dll
